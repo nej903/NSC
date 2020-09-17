@@ -12,22 +12,19 @@ get_count <- function(df) {
   return(df %>% arrange(desc(df$Total)))
 }
 
-graduated_or_not <- function(df, graduated) {
+
+graduated_students_or_colleges <- function(df, graduated, wanted) {
   ifelse(graduated, df <- df %>% filter(Graduated. == 'Y'), df <- df %>% filter(Graduated. == 'N'))
-  return(get_count(df))
+  ifelse(wanted == 'students', return(df), return(get_count(df)))
 }
 
-graduated_df <- function(df, graduated) {
-  ifelse(graduated, df <- df %>% filter(Graduated. == 'Y'), df <- df %>% filter(Graduated. == 'N'))
-  return(df)
-}
 
-df_graduated_colleges <- graduated_or_not(df,TRUE)
+df_graduated_colleges <- graduated_students_or_colleges(df, TRUE, 'colleges')
 
-df_not_graduated_colleges <- graduated_or_not(df, FALSE)
+df_not_graduated_colleges <- graduated_students_or_colleges(df, FALSE, 'colleges')
 
 df_total_colleges <- get_count(df)
 
-df_graduated_stus <- graduated_df(df, TRUE)
+df_graduated_stus <- graduated_students_or_colleges(df, TRUE, 'students')
 
-df_did_not_graduated_stus <- graduated_df(df, FALSE)
+df_did_not_graduated_stus <- graduated_students_or_colleges(df, FALSE, 'students')

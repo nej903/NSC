@@ -12,12 +12,13 @@ get_count <- function(df) {
   return(df %>% arrange(desc(df$Total)))
 }
 
-
 graduated_students_or_colleges <- function(df, graduated, wanted) {
-  ifelse(graduated, df <- df %>% filter(Graduated. == 'Y'), df <- df %>% filter(Graduated. == 'N'))
-  ifelse(wanted == 'students', return(df), return(get_count(df)))
+  if (rapportools::is.boolean(graduated)) {
+    ifelse(graduated, df <- df %>% filter(Graduated. == 'Y'), df <- df %>% filter(Graduated. == 'N'))
+    ifelse(wanted == 'students', return(df), return(get_count(df)))
+  }
+  stop('Graduated must be boolean')
 }
-
 
 df_graduated_colleges <- graduated_students_or_colleges(df, TRUE, 'colleges')
 
